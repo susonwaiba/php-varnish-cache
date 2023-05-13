@@ -5,6 +5,19 @@ Varnish cache integration for PHP
 
 Version: Under Development `dev-main`
 
+Some stats:-
+
+| Stack | x | Response Time |
+| --- | --- | --- |
+| Nginx + PHP-FPM | 1st | 7ms (Fast) |
+| Nginx + PHP-FPM | 2nd | 7ms |
+| Nginx + PHP-FPM | 3nd | 7ms |
+| | | |
+| Varnish + Nginx + PHP-FPM | 1st | 7ms |
+| Varnish + Nginx + PHP-FPM | 2nd | 1ms (Super Fast) |
+| Varnish + Nginx + PHP-FPM | 3nd | 1ms |
+
+## Quick Code Look
 
 ```php
 <?php
@@ -77,13 +90,13 @@ bin/php-varnish-cache cache:clean
 - http://localhost:8080/clean
 - http://localhost/clean
 
-## Running tests
+## Running Tests
 
 ```bash
 ./vendor/bin/phpunit ./tests/
 ```
 
-## Project overview
+## Project Overview
 
 - [x] Setup docker development environment
 - [x] Enable varnish cache for requests
