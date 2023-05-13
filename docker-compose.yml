@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  fpm:
+    image: php-varnish-cache-fpm
+    build:
+      context: .
+      dockerfile: docker/fpm/Dockerfile
+    working_dir: /var/www/project
+    volumes:
+      - ./:/var/www/project
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - fpm
+  varnish:
+    image: varnish:7.3-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./docker/varnish.vcl:/etc/varnish/default.vcl:ro
+    depends_on:
+      - nginx
+
