@@ -62,6 +62,21 @@ bin/php-varnish-cache
 bin/php-varnish-cache cache:clean
 ```
 
+## Http Request
+
+#### Request via Nginx
+
+- http://localhost:8080
+
+#### Request via Varnish
+
+- http://localhost
+
+#### Varnish cache clean
+
+- http://localhost:8080/clean
+- http://localhost/clean
+
 ## Running tests
 
 ```bash
