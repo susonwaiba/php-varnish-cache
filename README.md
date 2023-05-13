@@ -9,33 +9,71 @@ Version: Under Development `dev-main`
 ```php
 <?php
 
-// Something
+use SusonWaiba\PhpVarnishCache\VarnishCacheManager;
 
+// Direct use via Manager
+$manager = new VarnishCacheManager();
+$response = $manager->getVarnishCache()->clean();
+
+// Set base_url and options
+$varnishCache = $manager->setOptions([
+    'base_url' => 'http//varnish',
+    'timeout' => 2.0,
+])->getVarnishCache(true);
+$response = $varnishCache->clean();
 ```
 
 ## Installation
 
 ```bash
-composer require susonwaiba/php-varnish-cache
+composer require ***/***
 ```
 
-## Varnish config
+## Varnish
 
-```
-Something
-```
+- `docker/varnish.vcl`
+
+#### Varnish cache hit status
+
+- Header key for cache debug: `X-Varnish-Cache-Debug`
+
+#### Varnish cache headers
+
+- Header key for cache tag: `X-Varnish-Tag`
+- Header key for cache pool: `X-Varnish-Pool`
+
+#### Varnish cache PURGE headers
+
+- `PURGE` request with header `X-Varnish-Tag-Pattern` for tags
+- `PURGE` request with header `X-Varnish-Pool-Pattern` for pool
 
 ## Development Setup
 
-- Git clone project
-- Something
+```bash
+git clone https://github.com/susonwaiba/php-varnish-cache.git
+cd php-varnish-cache
+
+docker-compose build
+docker-compose up -d
+
+docker-compose exec fpm bash
+
+bin/php-varnish-cache
+bin/php-varnish-cache cache:clean
+```
+
+## Running tests
+
+```bash
+./vendor/bin/phpunit ./tests/
+```
 
 ## Project overview
 
-- [ ] Setup docker development environment
-- [ ] Enable varnish cache for requests
-- [ ] Varnish cache clean by tags
-- [ ] Varnish cache clean by pools
+- [x] Setup docker development environment
+- [x] Enable varnish cache for requests
+- [x] Varnish cache clean by tags
+- [x] Varnish cache clean by pools
 - [ ] Integration with Symfony
 - [ ] Integration with Laravel
-- [ ] Command for cache clean
+- [x] Command for cache clean
