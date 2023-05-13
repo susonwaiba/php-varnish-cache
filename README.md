@@ -12,6 +12,7 @@ Some stats:-
 | Nginx + PHP-FPM | 1st | 7ms |
 | Nginx + PHP-FPM | 2nd | 7ms |
 | Nginx + PHP-FPM | 3nd | 7ms |
+| | | |
 | Varnish + Nginx + PHP-FPM | 1st | 7ms |
 | Varnish + Nginx + PHP-FPM | 2nd | 1ms |
 | Varnish + Nginx + PHP-FPM | 3nd | 1ms |
