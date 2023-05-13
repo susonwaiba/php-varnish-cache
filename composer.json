@@ -1,0 +1,30 @@
+{
+    "name": "susonwaiba/php-varnish-cache",
+    "description": "Varnish cache integration for PHP",
+    "type": "library",
+    "license": "MIT",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "SusonWaiba\\PhpVarnishCache\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Suson Waiba",
+            "email": "susonwaiba@gmail.com"
+        }
+    ],
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "require": {
+        "php": ">=8.1",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.1"
+    }
+}
