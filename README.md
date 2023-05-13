@@ -7,7 +7,7 @@ Version: Under Development `dev-main`
 
 Some stats:-
 
-| Stack | Interval | Response Time |
+| Stack | x | Response Time |
 | --- | --- | --- |
 | Nginx + PHP-FPM | 1st | 7ms |
 | Nginx + PHP-FPM | 2nd | 7ms |
