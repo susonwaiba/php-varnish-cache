@@ -27,11 +27,12 @@ class Route
 
     public function execute(RequestInterface $request): JsonResponse
     {
+        $baseUri = $request->getUri()->getPath();
         try {
-            if (isset($route->getMap()[$uri])) {
-                return $this->executeController($route->getMap()[$uri], $request);
-            } elseif (isset($route->getMap()[$method . ' ' . $uri])) {
-                return $this->executeController($route->getMap()[$method . ' ' . $uri], $request);
+            if (isset($this->getMap()[$baseUri])) {
+                return $this->executeController($this->getMap()[$baseUri], $request);
+            } elseif (isset($this->getMap()[$request->getMethod() . ' ' . $baseUri])) {
+                return $this->executeController($this->getMap()[$request->getMethod() . ' ' . $baseUri], $request);
             }
         } catch (\Exception $e) {
             return (new JsonResponse())->setData([
