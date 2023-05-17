@@ -46,12 +46,10 @@ composer require ***/***
 
 - `docker/varnish.vcl`
 
-#### Varnish cache hit status
-
-- Header key for cache debug: `X-Varnish-Cache-Debug`
-
 #### Varnish cache headers
 
+- Header key for varnish debug: `X-Varnish-Debug`
+- Header key for cache hit status: `X-Varnish-Cache-Debug`
 - Header key for cache tag: `X-Varnish-Tag`
 - Header key for cache pool: `X-Varnish-Pool`
 
