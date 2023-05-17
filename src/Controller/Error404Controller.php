@@ -24,8 +24,7 @@ class Error404Controller implements ControllerInterface
             ->setCacheTags(['error404'])
             ->setCachePoolCodes(['page'])
             ->setCacheControls([
-                'no-cache' => true,
-                'max-age' => 604800,
+                'max-age' => 172800, // 60*60*24*2
             ])
             ->withStatus(404);
     }

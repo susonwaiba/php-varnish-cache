@@ -28,6 +28,7 @@ class CleanController implements ControllerInterface
             'varnish_request_status_code' => $response->getStatusCode(),
         ];
 
+        // By default, response are skiped from cache
         return (new JsonResponse())->setData($data);
     }
 }

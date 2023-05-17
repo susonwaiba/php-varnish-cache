@@ -25,8 +25,7 @@ class HomeController implements ControllerInterface
             ->setCacheTags(['home'])
             ->setCachePoolCodes(['page'])
             ->setCacheControls([
-                'no-cache' => true,
-                'max-age' => 604800,
+                'max-age' => 172800, // 60*60*24*2
             ]);
     }
 }
