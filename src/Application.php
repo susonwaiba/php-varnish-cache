@@ -41,21 +41,27 @@ class Application
     {
         http_response_code($response->getStatusCode() ?? 200);
 
-        // Setting debug header, this will be used by varnish to add debug headers
+        // Setting varnish debug header
+        // true = debug headers will be added
+        // false = debug headers will be removed
         header('X-Varnish-Debug: true', true);
 
         // By default all request are cached
         $cacheTags = $response->getCacheTags();
-        $cacheTags[] = 'all';
-        header('X-Varnish-Tag: |' . implode('|', $cacheTags) . '|', true);
+        if (count($cacheTags) === 0) {
+            $cacheTags[] = 'default';
+        }
+        header('X-Varnish-Tag: ' . implode(', ', $cacheTags), true);
 
         $cachePoolCodes = $response->getCachePoolCodes();
-        $cachePoolCodes[] = 'all';
-        header('X-Varnish-Pool: |' . implode('|', $cachePoolCodes) . '|', false);
+        if (count($cacheTags) === 0) {
+            $cachePoolCodes[] = 'default';
+        }
+        header('X-Varnish-Pool: ' . implode(', ', $cachePoolCodes), false);
 
         $cacheControls = $response->getCacheControls();
         // This should skip cache as default behavior
-        if (!isset($cacheControls['max-age'], $cacheControls['must-understand'], $cacheControls['no-store'])) {
+        if (count($cacheControls) === 0) {
             $cacheControls['max-age'] = 0;
             $cacheControls['must-understand'] = true;
             $cacheControls['no-store'] = true;
