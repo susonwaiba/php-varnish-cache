@@ -13,6 +13,7 @@ class JsonResponse extends Response
     protected array $data = [];
     protected array $cacheTags = [];
     protected array $poolCodes = [];
+    protected array $cacheControls = [];
 
     /**
      * @param array<string, mixed> $data
@@ -67,4 +68,23 @@ class JsonResponse extends Response
     {
         return $this->poolCodes;
     }
+
+    /**
+     * @param array<string> $cacheControls
+     */
+    public function setCacheControls(array $cacheControls): self
+    {
+        $this->cacheControls = $cacheControls;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getCacheControls(): array
+    {
+        return $this->cacheControls;
+    }
+
 }

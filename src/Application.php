@@ -39,23 +39,42 @@ class Application
 
     protected function displayResponse(JsonResponse $response): void
     {
-        // TODO: if X-Varnish-Tag is not set, then bypass varnish cache
+        http_response_code($response->getStatusCode() ?? 200);
+
+        // Setting debug header, this will be used by varnish to add debug headers
+        header('X-Varnish-Debug: true', true);
+
         // By default all request are cached
         $cacheTags = $response->getCacheTags();
-        if (count($cacheTags) > 0) {
-            header('X-Varnish-Tag: |' . implode('|', $cacheTags) . '|', true);
-        }
+        $cacheTags[] = 'all';
+        header('X-Varnish-Tag: |' . implode('|', $cacheTags) . '|', true);
 
         $cachePoolCodes = $response->getCachePoolCodes();
-        if (count($cachePoolCodes) > 0) {
-            header('X-Varnish-Pool: |' . implode('|', $cachePoolCodes, true) . '|', false);
+        $cachePoolCodes[] = 'all';
+        header('X-Varnish-Pool: |' . implode('|', $cachePoolCodes, true) . '|', false);
+
+        $cacheControls = $response->getCacheControls();
+        // This should skip cache as default behavior
+        if (!isset($cacheControls['max-age'], $cacheControls['must-understand'], $cacheControls['no-store'])) {
+            $cacheControls['max-age'] = 0;
+            $cacheControls['must-understand'] = true;
+            $cacheControls['no-store'] = true;
         }
 
+        $cacheControlArray = [];
+        foreach ($cacheControls as $key => $val) {
+            if (is_bool($val)) {
+                if ($val) {
+                    $cacheControlArray[] = $key;
+                }
+            } else {
+                $cacheControlArray[] = $key . '=' . $val;
+            }
+        }
+        $cacheControlText = implode(', ', $cacheControlArray);
+        header('Cache-Control: ' . $cacheControlText, true);
+
         header('Content-Type: application/json; charset=utf-8', false);
-
-        header("Cache-Control: public, max-age=604800, must-revalidate", true);
-
-        http_response_code($response->getStatusCode() ?? 200);
 
         echo json_encode($response->getData(), JSON_PRETTY_PRINT);
     }

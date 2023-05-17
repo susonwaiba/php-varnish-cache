@@ -28,6 +28,6 @@ class CleanController implements ControllerInterface
             'varnish_request_status_code' => $response->getStatusCode(),
         ];
 
-        return (new JsonResponse())->setCacheTags(['clean'])->setData($data);
+        return (new JsonResponse())->setData($data);
     }
 }

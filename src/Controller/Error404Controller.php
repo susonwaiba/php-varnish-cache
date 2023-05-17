@@ -20,6 +20,13 @@ class Error404Controller implements ControllerInterface
             'message' => '404 Not Found',
         ];
 
-        return $response->setData($data)->setCacheTags(['error404'])->withStatus(404);
+        return $response->setData($data)
+            ->setCacheTags(['error404'])
+            ->setCachePoolCodes(['page'])
+            ->setCacheControls([
+                'no-cache' => true,
+                'max-age' => 604800,
+            ])
+            ->withStatus(404);
     }
 }

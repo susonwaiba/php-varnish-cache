@@ -21,6 +21,12 @@ class HomeController implements ControllerInterface
             'date-time' => date('Y-m-d H:i:s'),
         ];
 
-        return $response->setData($data)->setCacheTags(['home']);
+        return $response->setData($data)
+            ->setCacheTags(['home'])
+            ->setCachePoolCodes(['page'])
+            ->setCacheControls([
+                'no-cache' => true,
+                'max-age' => 604800,
+            ]);
     }
 }
