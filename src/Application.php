@@ -51,7 +51,7 @@ class Application
 
         $cachePoolCodes = $response->getCachePoolCodes();
         $cachePoolCodes[] = 'all';
-        header('X-Varnish-Pool: |' . implode('|', $cachePoolCodes, true) . '|', false);
+        header('X-Varnish-Pool: |' . implode('|', $cachePoolCodes) . '|', false);
 
         $cacheControls = $response->getCacheControls();
         // This should skip cache as default behavior
