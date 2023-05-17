@@ -104,18 +104,9 @@ sub vcl_hash {
 }
 
 sub vcl_backend_response {
-	# Serve stale content for x minutes after object expiration
+	# Serve stale content for x hrs after object expiration
 	# Perform asynchronous revalidation while stale content is served
-    # 10 minutes
-    # set beresp.grace = 600s;
-    set beresp.grace = 1h;
-    # set beresp.grace = 1d;
-
-    # If the file is marked as static we cache it for 1 day
-    if (bereq.http.X-Static-File == "true") {
-        unset beresp.http.Set-Cookie;
-        set beresp.ttl = 1d;
-    }
+    set beresp.grace = 2h;
 
     # If we dont get a Cache-Control header from the backend
     # we default to 1h cache for all objects
@@ -138,11 +129,21 @@ sub vcl_deliver {
         set resp.http.X-Varnish-Cache-Debug = "MISS";
     }
 
+    # Don't let browser cache non-static requests
+    if (resp.http.Cache-Control !~ "private" && req.url !~ "^/(media|static)/") {
+        set resp.http.Cache-Control = "no-store, no-cache, must-revalidate, max-age=0";
+    }
+
     # Cleanup of headers
-    #unset resp.http.Age;
-    #unset resp.http.X-Powered-By;
-    #unset req.http.X-Static-File;
-    #unset resp.http.X-Varnish-Tag;
-    #unset resp.http.X-Varnish-Pool;
-    #unset resp.http.Via;
+    if (resp.http.X-Varnish-Debug != "true") {
+        unset resp.http.Age;
+        unset resp.http.X-Powered-By;
+        unset resp.http.X-Static-File;
+        unset resp.http.X-Varnish;
+        unset resp.http.X-Varnish-Tag;
+        unset resp.http.X-Varnish-Pool;
+        unset resp.http.X-Varnish-Debug;
+        unset resp.http.X-Varnish-Cache-Debug;
+        unset resp.http.Via;
+    }
 }
